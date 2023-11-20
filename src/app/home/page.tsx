@@ -17,24 +17,28 @@ export default function HomePage() {
     { id: 6, anexo: primeira, titulo: "Primeira" },
   ];
 
-  const [windowWidth, setWindowWidth] = useState(() => (typeof window !== 'undefined' ? window.innerWidth : 0));  
+  
 
   const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false)
 
+  const [windowWidth, setWindowWidth] = useState(0);
+
   useEffect(() => {
-    if(typeof window !== "undefined"){
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth)
-        }
-    
-        window.addEventListener('resize', handleResize)
-    
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+  
+    // Adiciona o event listener ao montar o componente no lado do cliente
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth);
+      window.addEventListener('resize', handleResize);
+  
+      // Remove o event listener ao desmontar o componente
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
     }
-    
-  }, [])
+  }, []);
 
   const windowMd = windowWidth > 768
 
