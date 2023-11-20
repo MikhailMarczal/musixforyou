@@ -19,28 +19,26 @@ export default function HomePage() {
 
   
 
-  const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false)
+    const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false)
 
-  const [windowWidth, setWindowWidth] = useState(0);
+    const [windowWidth, setWindowWidth] = useState(0);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-  
-    // Adiciona o event listener ao montar o componente no lado do cliente
-    if (typeof window !== 'undefined') {
-      setWindowWidth(window.innerWidth);
-      window.addEventListener('resize', handleResize);
-  
-      // Remove o event listener ao desmontar o componente
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }
-  }, []);
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+    
+        if (typeof window !== 'undefined') {
+            setWindowWidth(window.innerWidth);
+            window.addEventListener('resize', handleResize);
+    
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+        }
+    }, []);
 
-  const windowMd = windowWidth > 768
+    const windowMd = windowWidth > 768
 
   return (
     <div className="flex">
