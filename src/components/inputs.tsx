@@ -1,15 +1,23 @@
 "use client"
-import { HTMLInputTypeAttribute, useState } from "react"
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react"
+import { AiOutlineCloudUpload, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import { BsTrash3 } from "react-icons/bs";
+import "./styles.css"
+import { IButton, IChildren } from "@/interfaces/Button";
 
 interface IPropsInput {
     type: HTMLInputTypeAttribute
+    placeholder: string
+    value: string,
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    className?: string;
 }
 
 export function Input(props: IPropsInput){
     return(
-        <div>
-            <input type={props.type} className="border rounded-sm"/>
+        <div className={`form__group field ${props.className}`}>
+            <input type={props.type} className="form__field" placeholder="Name" required value={props.value} onChange={props.onChange}/>
+            <label htmlFor="name" className="form__label">{props.placeholder}</label>
         </div>
     )
 }
@@ -30,3 +38,87 @@ export function InputPassword(props: IPropsInputPassword){
         </div>
     )
 }
+
+interface IPropsInputImage{
+    acceptedFiles: string
+    handleImages: (files: FileList) => void;
+    capa?: File
+    clickRemoveCapa: () => void;
+}
+
+export function InputImage(props: IPropsInputImage){
+    return(
+        <label 
+            htmlFor="inputArchivesWithDrag" 
+            className={`group-hover:bg-slate-200 border-2 p-4 border-pormadeMediumGray/80 hover:border-pormadeGreen hover:bg-pormadeLightGray/60 animation border-dashed rounded-md cursor-pointer relative z-80 flex justify-center`}
+            onDrop={(evt) => {
+                evt.preventDefault(); 
+                props.handleImages(evt.dataTransfer.files)
+            }}
+            onDragOver={(evt) => {
+                evt.preventDefault()}
+            }   
+        >
+            {props.capa ? (
+            <div 
+                className="bg-white absolute p-2 rounded-md top-6 right-6 z-100" 
+                onClick={(evt) => {
+                    evt.preventDefault()
+                    props.clickRemoveCapa()
+                }}
+            >
+                <BsTrash3 color="red" size={25} />
+            </div>
+        ) : null}
+            {!props.capa ? (
+                <div className="col-span-full w-full text-center items-center flex flex-col">
+                    <AiOutlineCloudUpload size={32} color="#f5f5f5" className="animate-bounce"/>
+                    <strong className="text-[#f5f5f5]">Clique para enviar uma imagem</strong>
+                </div>) : (
+                    <img src={URL.createObjectURL(props.capa)} alt="" className="max-h-[400px]"/>
+                )}
+            <input 
+                type="file" 
+                name="inputArchivesWithDrag" 
+                id="inputArchivesWithDrag"  
+                className="hidden"  
+                onChange={(evt) => props.handleImages(evt.target.files!)}
+                accept={props.acceptedFiles}
+            />
+        </label>
+    )
+}
+
+/**
+ * @param {string} text
+ * @param {"full" | "auto"} width
+ * @param {"large" | "medium" | "small" | "custom"} size
+ * @param {string} className if size is "custom" information your tailwind size
+ */
+export function Button(props: IButton & IChildren) {
+    const color =
+        props.color == "red" ? "linear-gradient-red" : "linear-gradient-green";
+    const widhtButton = props.width == "full" ? "w-full" : "w-auto";
+    const sizeButton =
+        props.size === "custom"
+            ? props.className ?? ""
+            : props.size == "large"
+            ? "px-6 py-4"
+            : props.size == "medium"
+            ? "px-5 py-3"
+            : "px-4 py-2";
+
+    return (
+        <button
+            className={`button ${widhtButton} ${sizeButton}  ${color} ${
+                props.className ?? ""
+            }`}
+            onClick={props.onClick}
+            type={props.type}
+        >
+            {props.text}
+            {props.children}
+        </button>
+    );
+}
+

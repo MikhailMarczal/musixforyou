@@ -1,3 +1,5 @@
+import { ROUTES } from "@/constants";
+import Link from "next/link";
 import { AiOutlineMenu } from "react-icons/ai";
 
 interface IProps {
@@ -8,7 +10,7 @@ interface IProps {
 export default function Navbar(props: IProps) {
 
     return (
-        <header className={`w-full bg-[#111111] text-white shadow-md`}>
+        <header className={`w-full bg-mediumBlack text-white shadow-md`}>
             <div className="flex items-center justify-between h-20 px-4 sm:px-6">
                 {!props.windowMd ? (
                     <AiOutlineMenu size={32} className="cursor-pointer" onClick={props.handleLeftMenu} />
@@ -19,12 +21,12 @@ export default function Navbar(props: IProps) {
                 )}
                 
                 <div className="gap-4 flex items-center">
-                    <p>
+                    <Link href={ROUTES.REGISTER}>
                         Registrar
-                    </p>
-                    <span className="bg-blue-400 rounded-full p-4 text-black font-bold">
+                    </Link>
+                    <Link href={ROUTES.LOGIN} className="bg-blue-400 rounded-full p-4 text-black font-bold">
                         Entrar
-                    </span>
+                    </Link>
                 </div>
             </div>
         </header>

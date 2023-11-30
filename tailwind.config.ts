@@ -15,9 +15,19 @@ const config: Config = {
         },
         screens: {
             xsm: "420px"
-        },boxShadow: {
+        },
+        boxShadow: {
             cards: "0px 1px 5px #111111",
+        },
+        colors: {
+            mediumBlack: "#111111",
+            lowBlack: "#202020",
+            customRed:  "#ff3135",
+            customOrange: "#ff6546",
+            customLightGreen: "#509D45",
+            customGreen: "#437453"
         }
+        
         },
     },
     plugins: [],

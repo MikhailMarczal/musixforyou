@@ -40,30 +40,24 @@ export default function HomePage() {
 
     const windowMd = windowWidth > 768
 
+
   return (
-    <div className="flex">
-        {windowMd ? <LeftMenu /> : (
-            isLeftMenuOpen ? <LeftMenuSmallWindows onClickOut={() => setIsLeftMenuOpen(false)} handleIsLeftMenuOpen={() => setIsLeftMenuOpen(old => !old)} /> : null
-        )}
-        <main className="min-h-screen w-full bg-gradient-to-b from-[#111111] via-[#202020] via-30% to-[#0B5EAA]/80">
-            <Navbar  windowMd={windowMd} handleLeftMenu={() => setIsLeftMenuOpen(old => !old)}/>
-            <div className="flex gap-4 p-4">
-                <Masonry
-                    columns={{ xs: 1, sm: 2, md: 3, lg: 5 }}
-                    spacing={1.5}
-                >
-                    {InfoArray.map((item) => (
-                        <MusicCard
-                            anexo={item.anexo}
-                            titulo={item.titulo}
-                            id={item.id}
-                            key={item.id + "a"}
-                            onClickDownload={() => console.log(`Download ${item.titulo}`)}
-                        />
-                    ))}
-                </Masonry>
-            </div>
-        </main>
+    <div className="">
+            <Masonry
+                columns={{ xs: 1, sm: 2, md: 3, lg: 5 }}
+                spacing={1.5}
+                className="justify-center pt-1 px-4"
+            >
+                {InfoArray.map((item) => (
+                    <MusicCard
+                        anexo={item.anexo}
+                        titulo={item.titulo}
+                        id={item.id}
+                        key={item.id + "a"}
+                        redirect={`/home/${item.id}`}
+                    />
+                ))}
+            </Masonry>
     </div>
   );
 }
