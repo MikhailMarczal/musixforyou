@@ -31,7 +31,7 @@ export default function RootLayout({
     const windowMd = windowWidth > 768
 
     return (
-        <div className="flex">
+        <div className="flex overflow-x-hidden">
         {windowMd ? <LeftMenu /> : (
             isLeftMenuOpen ? <LeftMenuSmallWindows onClickOut={() => setIsLeftMenuOpen(false)} handleIsLeftMenuOpen={() => setIsLeftMenuOpen(old => !old)} /> : null
         )}

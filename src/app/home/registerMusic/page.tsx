@@ -1,8 +1,9 @@
 "use client"
 import { createMusic } from "@/app/actions/postMusic";
-import { Button, Input, InputImage } from "@/components/inputs";
+import { AnimatedButton, Button, Input, InputImage } from "@/components/inputs";
 import { TYPE_ACCEPT_IMAGES } from "@/constants";
 import { IPostMusic } from "@/interfaces";
+import axios from "axios";
 import { ChangeEvent, useState } from "react";
 
 export default function RegisterMusic(){
@@ -11,8 +12,10 @@ export default function RegisterMusic(){
         nome: "",
         link: "",
         cantor: "",
-        capa: undefined
     })
+    const [selectedImage, setSelectedImage] = useState("")
+    const [selectedFile, setSelectedFile] = useState<File>()
+    const [isUploading, setIsUploading] = useState(false)
 
 
     function handleImages(files: FileList){
@@ -23,11 +26,29 @@ export default function RegisterMusic(){
     }
 
     function clickRemoveCapa(){
-        setDataPostMusic(old => ({...old, capa: undefined}))
+        //setSelectedImage()
     }
 
-    function postMusic(){
-        createMusic(dataPostMusic)
+    const handleUpload = async () => {
+        setIsUploading(true);
+        
+        try {
+            if(!selectedFile) return
+            
+            const formData = new FormData() 
+            
+            /* formData.append("nome", dataPostMusic.nome)
+            formData.append("cantor", dataPostMusic.cantor)
+            formData.append("link", dataPostMusic.link) */
+            formData.append("capa", selectedFile)
+
+            const { data } = await axios.post("/app/api/image", formData)
+            console.log(data)
+
+        } catch(error : any){
+            console.log(error.response?.data)
+        }
+        setIsUploading(false)
     }
     
     return (
@@ -52,13 +73,20 @@ export default function RegisterMusic(){
                     value={dataPostMusic.cantor} 
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setDataPostMusic(old => ({...old, cantor: e.target.value}))} 
                 />
+                <p className="text-white text-lg -mb-2">Capa</p>
                 <InputImage 
-                    handleImages={(evt) => handleImages(evt)} 
+                    handleImages={(e) => {
+                        if(e.target?.files.length > 0) {
+                            const file = e.target?.files[0]
+                            setSelectedImage(URL.createObjectURL(file))
+                            setSelectedFile(file)
+                        }
+                    }} 
                     acceptedFiles={TYPE_ACCEPT_IMAGES} 
                     capa={dataPostMusic.capa}
                     clickRemoveCapa={clickRemoveCapa}
                 />
-                <Button size="small" text="Enviar música" type="button" width="full" className="text-white font-bold" onClick={() => postMusic()}/>
+                <AnimatedButton  onClick={handleUpload} text="Enviar música" />
                 
             </form>
         </div>

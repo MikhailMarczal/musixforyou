@@ -6,20 +6,22 @@ const { v4: uuid } = require("uuid")
 
 export async function createMusic(dataPost: IPostMusic){
     
+    console.log(dataPost)
     //criar id unico
     const uniqueId = uuid()
 
 
-    const unique = await client.zAdd("musics", {
-        value: dataPost.nome,
-        score: uniqueId
+    await client.zAdd("musics", {
+        value: String(uniqueId),
+        score: Date.now()
     })
 
     //salvar hash da musica
-    await client.hSet(`musics:${uniqueId},`, {
+    await client.hSet(`music:${uniqueId}`, {
         nome: dataPost.nome,
         link: dataPost.link,
-        cantor: dataPost.cantor
+        cantor: dataPost.cantor,
+        /* capa: ? */
     })
 
 }

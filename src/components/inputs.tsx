@@ -4,6 +4,7 @@ import { AiOutlineCloudUpload, AiOutlineEye, AiOutlineEyeInvisible } from "react
 import { BsTrash3 } from "react-icons/bs";
 import "./styles.css"
 import { IButton, IChildren } from "@/interfaces/Button";
+import styles from "./AnimatedButton.module.css"
 
 interface IPropsInput {
     type: HTMLInputTypeAttribute
@@ -41,7 +42,7 @@ export function InputPassword(props: IPropsInputPassword){
 
 interface IPropsInputImage{
     acceptedFiles: string
-    handleImages: (files: FileList) => void;
+    handleImages: (e: any) => void;
     capa?: File
     clickRemoveCapa: () => void;
 }
@@ -51,13 +52,6 @@ export function InputImage(props: IPropsInputImage){
         <label 
             htmlFor="inputArchivesWithDrag" 
             className={`group-hover:bg-slate-200 border-2 p-4 border-pormadeMediumGray/80 hover:border-pormadeGreen hover:bg-pormadeLightGray/60 animation border-dashed rounded-md cursor-pointer relative z-80 flex justify-center`}
-            onDrop={(evt) => {
-                evt.preventDefault(); 
-                props.handleImages(evt.dataTransfer.files)
-            }}
-            onDragOver={(evt) => {
-                evt.preventDefault()}
-            }   
         >
             {props.capa ? (
             <div 
@@ -82,7 +76,7 @@ export function InputImage(props: IPropsInputImage){
                 name="inputArchivesWithDrag" 
                 id="inputArchivesWithDrag"  
                 className="hidden"  
-                onChange={(evt) => props.handleImages(evt.target.files!)}
+                onChange={(evt) => props.handleImages(evt)}
                 accept={props.acceptedFiles}
             />
         </label>
@@ -97,7 +91,7 @@ export function InputImage(props: IPropsInputImage){
  */
 export function Button(props: IButton & IChildren) {
     const color =
-        props.color == "red" ? "linear-gradient-red" : "linear-gradient-green";
+        props.color == "red" ? "linear-gradient-red" : "blue";
     const widhtButton = props.width == "full" ? "w-full" : "w-auto";
     const sizeButton =
         props.size === "custom"
@@ -110,7 +104,7 @@ export function Button(props: IButton & IChildren) {
 
     return (
         <button
-            className={`button ${widhtButton} ${sizeButton}  ${color} ${
+            className={`button border-2 border-white rounded-md animate ${widhtButton} ${sizeButton}  ${
                 props.className ?? ""
             }`}
             onClick={props.onClick}
@@ -118,6 +112,24 @@ export function Button(props: IButton & IChildren) {
         >
             {props.text}
             {props.children}
+        </button>
+    );
+}
+
+
+interface IPropsAnimatedButton {
+    text: string;
+    onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    className?: string;
+}
+
+export function AnimatedButton(props: IPropsAnimatedButton) {
+    return (
+        <button
+            onClick={props.onClick}
+            className={`${props.className} ${styles.animatedButton}`}
+        >
+            {props.text}
         </button>
     );
 }
