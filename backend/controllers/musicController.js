@@ -1,6 +1,7 @@
 const { v4: uuid } = require("uuid")
 const client = require("../db")
 const fs = require("fs")
+const ytdl = require("ytdl-core");
 
 exports.create = async (req, res) => {
     const uniqueId = uuid()
@@ -18,11 +19,21 @@ exports.create = async (req, res) => {
         
         const date = Date.now()
 
+        const videoUrl = req.body.link
+        const videoInfo = await ytdl.getInfo(videoUrl)
+        const audioFormats = ytdl.filterFormats(videoInfo.formats, "audioonly")
+
+        var musicAsAudio
+        audioFormats.map((item) => {
+            musicAsAudio = item.url
+        })
+
         await client.hSet(`music:${uniqueId}`, {
             id: uniqueId,
             nome: req.body.nome,
             link: req.body.link,
             cantor: req.body.cantor,
+            musicAsAudio: musicAsAudio, 
             capa: `http://localhost:3000/${req.file.path}`
         })
 
