@@ -8,5 +8,6 @@ const upload = require("../config/multer")
 router.post("/create", upload.single("file"), MusicController.create)
 router.get("/getAll", MusicController.findAll)
 router.delete("/:id", MusicController.remove)
+router.get("/:id", MusicController.getOne)
 
 module.exports = router

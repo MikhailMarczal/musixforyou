@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
             nome: req.body.nome,
             link: req.body.link,
             cantor: req.body.cantor,
-            capa: `localhost:3000/${req.file.path}`
+            capa: `http://localhost:3000/${req.file.path}`
         })
 
         await client.zAdd("musics", {
@@ -56,6 +56,21 @@ exports.findAll = async (req, res) => {
     }
 }
 
+exports.getOne = async (req, res) => {
+    try {
+        
+        const music = await client.hGetAll(`music:${req.params.id}`)
+
+        if (!music.nome){
+            return res.status(404).json({message: "Erro ao encontrar musica"})
+        }
+
+        res.json(music)
+
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao buscar música" });
+    }
+}
 
 
 exports.remove = async (req,res) => {

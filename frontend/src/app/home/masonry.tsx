@@ -1,8 +1,12 @@
 "use client"
 import { Masonry, MasonryOwnProps } from "@mui/lab";
 
-export default function ClientMasonry(props: MasonryOwnProps & {children : React.ReactNode}){
+interface IPropsMasonry extends MasonryOwnProps{
+    className?: string
+}
+
+export default function ClientMasonry(props: IPropsMasonry & {children : React.ReactNode}){
     return (
-        <Masonry {...props}>{props.children}</Masonry>
+        <Masonry {...props} className={props.className}>{props.children}</Masonry>
     )
 }

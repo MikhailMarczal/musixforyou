@@ -1,17 +1,20 @@
 import { IGetMusics, MusicCard } from "@/components/cards";
-import primeira from "../../../public/primeira.png";
-import { Masonry } from "@mui/lab";
+
 import { getMusics } from "../actions/getAllMusics";
 import ClientMasonry from "./masonry";
+import axios from "axios";
 
 export default async function HomePage() {
 
-    const musics = await getMusics()
+
+    const response = await axios.get("http://localhost:3000/music/getAll")
+    const musics: IGetMusics[] = response.data
     
     return (
         <ClientMasonry
             columns={{ xs: 1, sm: 2, md: 3, lg: 5 }}
             spacing={1.5}
+            className="mx-auto"
         >
             {musics.map((item) => (
                 <MusicCard

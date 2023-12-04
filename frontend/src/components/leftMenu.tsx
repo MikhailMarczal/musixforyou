@@ -39,13 +39,13 @@ const SlideInLeft = {
 
 function LeftMenuSmallWindows(props: ILeftMenu) {
   return (
-    <div className="w-full h-screen fixed bg-transparent z-60">
+    <div className="w-full h-screen fixed bg-transparent z-40">
       <motion.div
         variants={SlideInLeft}
         initial="hidden"
         animate="visible"
         exit={{ x: "-350px" }}
-        className="bg-mediumBlack w-full xsm:w-[350px] h-screen fixed left-0 top-0 z-70 px-4 sm:px-5 py-4 text-white font-bold overflow-y-auto"
+        className="bg-mediumBlack w-full xsm:w-[350px] h-screen fixed left-0 top-0 z-50 px-4 sm:px-5 py-4 text-white font-bold overflow-y-auto"
       >
 
         <div className="grid grid-cols-1 gap-4">
