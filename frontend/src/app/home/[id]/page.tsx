@@ -24,18 +24,21 @@ export default function MusicPage({ params } : { params: { id: string }}){
 
 
     async function handleDownload(){
-        /* try {
-            const response = await fetch(archive);
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = dataGet.nome;
-            link.click();
-            URL.revokeObjectURL(url);
+        try {
+            if(dataGet.musicAsAudio){
+                const response = await fetch(dataGet.musicAsAudio);
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = dataGet.nome;
+                link.click();
+                URL.revokeObjectURL(url);
+            }
+            
         } catch (error) {
             toast.error("Erro")
-        } */
+        }
         
     }
     

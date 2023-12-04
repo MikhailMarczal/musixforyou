@@ -7,7 +7,8 @@ export interface IGetMusics {
     nome: string,
     link: string,
     cantor: string,
-    id: string
+    id: string,
+    musicAsAudio? : string
 }
 
 interface IProps extends IGetMusics {
