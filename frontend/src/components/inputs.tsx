@@ -119,13 +119,15 @@ export function Button(props: IButton & IChildren) {
 
 interface IPropsAnimatedButton {
     text: string;
-    onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     className?: string;
+    type: "button" | "submit" | "reset" | undefined
 }
 
 export function AnimatedButton(props: IPropsAnimatedButton) {
     return (
         <button
+            type={props.type}
             onClick={props.onClick}
             className={`${props.className} ${styles.animatedButton}`}
         >

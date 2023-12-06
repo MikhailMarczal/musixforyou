@@ -12,7 +12,7 @@ const musicRouter = require("./routes/music")
 const corsOptions = {
     credentials: true,
     optionSuccessStatus: 200,
-    exposedHeaders: "**"
+    exposedHeaders: "**",
 }
 
 app.use(cors(corsOptions))

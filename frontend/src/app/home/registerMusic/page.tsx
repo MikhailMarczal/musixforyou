@@ -4,7 +4,8 @@ import { AnimatedButton, Button, Input, InputImage } from "@/components/inputs";
 import { TYPE_ACCEPT_IMAGES } from "@/constants";
 import { IPostMusic } from "@/interfaces";
 import axios from "axios";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function RegisterMusic(){
 
@@ -12,41 +13,32 @@ export default function RegisterMusic(){
         nome: "",
         link: "",
         cantor: "",
+        capa: undefined
     })
-    const [selectedImage, setSelectedImage] = useState("")
-    const [selectedFile, setSelectedFile] = useState<File>()
+    
     const [isUploading, setIsUploading] = useState(false)
 
-
-    function handleImages(files: FileList){
-
-        if(files.length){
-            setDataPostMusic(old => ({...old, capa: files[0]}))
-        }
-    }
-
     function clickRemoveCapa(){
-        //setSelectedImage()
+        setDataPostMusic(old => ({...old, capa: undefined}))
     }
 
-    const handleUpload = async () => {
+    const handleUpload = async (e: FormEvent<HTMLFormElement>) => {
         setIsUploading(true);
-        
+        e.preventDefault()
         try {
-            if(!selectedFile) return
+            if(!dataPostMusic.capa) return
             
             const formData = new FormData() 
             
-            /* formData.append("nome", dataPostMusic.nome)
+            formData.append("nome", dataPostMusic.nome)
             formData.append("cantor", dataPostMusic.cantor)
-            formData.append("link", dataPostMusic.link) */
-            formData.append("capa", selectedFile)
+            formData.append("link", dataPostMusic.link)
+            formData.append("file", dataPostMusic.capa)
 
-            const { data } = await axios.post("/app/api/image", formData)
-            console.log(data)
-
+            await axios.post("http://localhost:3000/music/create", formData)
+            
         } catch(error : any){
-            console.log(error.response?.data)
+            toast.error(error.response?.data.message)
         }
         setIsUploading(false)
     }
@@ -54,7 +46,7 @@ export default function RegisterMusic(){
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold text-white text-center">Cadastrar Música</h1>
-            <form className="flex flex-col gap-4">
+            <form className="flex flex-col gap-4" onSubmit={(e) => handleUpload(e)}>
                 <Input 
                     type="text" 
                     placeholder="Nome da música" 
@@ -78,15 +70,14 @@ export default function RegisterMusic(){
                     handleImages={(e) => {
                         if(e.target?.files.length > 0) {
                             const file = e.target?.files[0]
-                            setSelectedImage(URL.createObjectURL(file))
-                            setSelectedFile(file)
+                            setDataPostMusic(old => ({...old, capa: file}))
                         }
                     }} 
                     acceptedFiles={TYPE_ACCEPT_IMAGES} 
                     capa={dataPostMusic.capa}
                     clickRemoveCapa={clickRemoveCapa}
                 />
-                <AnimatedButton  onClick={handleUpload} text="Enviar música" />
+                <AnimatedButton type="submit" text="Enviar música" />
                 
             </form>
         </div>

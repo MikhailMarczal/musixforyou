@@ -5,24 +5,16 @@ const ytdl = require("ytdl-core");
 
 exports.create = async (req, res) => {
     const uniqueId = uuid()
+    const videoUrl = req.body.link
 
+    const isVideoUrlValid = ytdl.validateURL(videoUrl)
+    
     try {
-        
-        const { name } = req.body
-
-        const { file } = req.file
-
-        const picture = {
-            name,
-            src: file
-        }
-        
         const date = Date.now()
 
-        const videoUrl = req.body.link
         const videoInfo = await ytdl.getInfo(videoUrl)
         const audioFormats = ytdl.filterFormats(videoInfo.formats, "audioonly")
-
+        
         var musicAsAudio
         audioFormats.map((item) => {
             musicAsAudio = item.url
@@ -42,11 +34,18 @@ exports.create = async (req, res) => {
             score: date
         })
 
-        res.json({picture, msg: "Musica salva com sucesso!"})
+        return res.status(200).json({msg: "Musica salva com sucesso!"})
 
     } catch (error) {
-        res.status(500).json({message: "Erro ao salvar musica"})
-        console.log(error);
+        if (fs.existsSync(req.file.path)){
+            fs.unlinkSync(req.file.path)
+        }
+
+        if(!isVideoUrlValid){
+            return res.status(400).json({msg: "Link para a música inválido"})
+        }
+        res.status(500).json({message: "Erro ao salvar musica, verifique se os dados estão inseridos corretamente"})
+            
     }
 }
 
