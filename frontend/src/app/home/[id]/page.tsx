@@ -23,23 +23,19 @@ export default function MusicPage({ params } : { params: { id: string }}){
     },[])
 
 
-    async function handleDownload(){
+    async function handleDownload() {
         try {
-            if(dataGet.musicAsAudio){
-                const response = await fetch(dataGet.musicAsAudio);
-                const blob = await response.blob();
-                const url = URL.createObjectURL(blob);
+            if (dataGet.musicAsAudio) {
                 const link = document.createElement("a");
-                link.href = url;
+                link.href = dataGet.musicAsAudio;
                 link.download = dataGet.nome;
+                link.target = "_blank"
+                link.rel = "noopener noreferrer"
                 link.click();
-                URL.revokeObjectURL(url);
             }
-            
         } catch (error) {
-            toast.error("Erro")
+            toast.error("Erro");
         }
-        
     }
     
     return (
@@ -52,11 +48,7 @@ export default function MusicPage({ params } : { params: { id: string }}){
             </div>
 
             <Link href={dataGet.link} className="text-xl ">Visualizar link da música</Link>
-            <button onClick={() => handleDownload()}>Baixar música</button>
-            
-
-
-
+            <button onClick={() => handleDownload()}>Converter para MP3</button>
         </div>
     )
 }
