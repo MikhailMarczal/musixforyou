@@ -1,13 +1,12 @@
 const express = require("express")
 const app = express()
-
 require("dotenv").config()
 require("./db")
 const cors = require("cors");
 
 const port = process.env.PORT || 3000
 
-const musicRouter = require("./routes/music")
+const musicRouter = require("./routes/music");
 
 const corsOptions = {
     credentials: true,

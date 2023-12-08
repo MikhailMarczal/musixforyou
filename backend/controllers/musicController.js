@@ -2,9 +2,10 @@ const { v4: uuid } = require("uuid")
 const client = require("../db")
 const fs = require("fs")
 const ytdl = require("ytdl-core");
+const repository = require("../repository");
+const { EntityId } = require("redis-om");
 
 exports.create = async (req, res) => {
-    const uniqueId = uuid()
     const videoUrl = req.body.link
 
     const isVideoUrlValid = ytdl.validateURL(videoUrl)
@@ -20,27 +21,32 @@ exports.create = async (req, res) => {
             musicAsAudio = item.url
         })
 
-        await client.hSet(`music:${uniqueId}`, {
-            id: uniqueId,
+        const data = {
             nome: req.body.nome,
-            link: req.body.link,
             cantor: req.body.cantor,
-            musicAsAudio: musicAsAudio, 
-            capa: `http://localhost:3000/${req.file.path}`
-        })
+            link: req.body.link,
+            musicAsAudio: musicAsAudio,
+            capa: `http://localhost:3000/${req.file.path}`,
+            favorito: false,
+        }
+        
+        const music = await repository.save(data)
+
+        music.id = music[EntityId]
+
+        await repository.save(music)
 
         await client.zAdd("musics", {
-            value: String(uniqueId),
+            value: music.id,
             score: date
-        })
+        }) 
 
-        return res.status(200).json({msg: "Musica salva com sucesso!"})
+        return res.status(200).json({id: `${music[EntityId]}`})
 
     } catch (error) {
         if (fs.existsSync(req.file.path)){
             fs.unlinkSync(req.file.path)
         }
-
         if(!isVideoUrlValid){
             return res.status(400).json({msg: "Link para a música inválido"})
         }
@@ -54,9 +60,9 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
     try {
         const result = await client.zRangeWithScores('musics', 0, -1)
-    
+        
         const musics = await Promise.all(result.map(async (item) => {
-            const musicData = await client.hGetAll(`music:${item.value}`)
+            const musicData = await repository.fetch(item.value)
             return musicData
         }))
     
@@ -68,9 +74,7 @@ exports.findAll = async (req, res) => {
 
 exports.getOne = async (req, res) => {
     try {
-        
-        const music = await client.hGetAll(`music:${req.params.id}`)
-
+        const music = await repository.fetch(req.params.id)
         if (!music.nome){
             return res.status(404).json({message: "Erro ao encontrar musica"})
         }
@@ -85,10 +89,9 @@ exports.getOne = async (req, res) => {
 
 exports.remove = async (req,res) => {
     try {
-        
         const id = req.params.id
         
-        const music = await client.hGetAll(`music:${id}`)
+        const music = await repository.fetch(id)
         
         if(!music.nome) {
             return res.status(404).json({message: "musica nao encontrada"})
@@ -106,7 +109,7 @@ exports.remove = async (req,res) => {
             return res.status(404).json({message: "Erro ao encontrar capa da musica"})
         }
 
-        await client.del(`music:${id}`)
+        await repository.remove(id)
 
         await client.zRem(`musics`, music.id)
 
