@@ -1,7 +1,7 @@
 "use client"
 
 import { IGetMusics } from "@/components/cards"
-import axios from "axios"
+import api from "@/services/api"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -18,7 +18,7 @@ export default function MusicPage({ params } : { params: { id: string }}){
         favorito: false
     })
     useEffect(() => {
-        axios.get(`http://localhost:3000/music/${params.id}`).then((res) => {
+        api.get(`/music/${params.id}`).then((res) => {
             setDataGet(res.data)
         })
     },[])

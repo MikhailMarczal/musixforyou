@@ -1,0 +1,15 @@
+.spinner {
+    animation: rotation 0.75s linear infinite;
+}
+
+.path {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 20;
+    stroke-linecap: round;
+  }
+
+  @keyframes rotation {
+    to {
+      transform: rotate(360deg);
+    }
+  }

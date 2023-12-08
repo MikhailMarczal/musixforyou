@@ -3,11 +3,12 @@ import { IGetMusics, MusicCard } from "@/components/cards";
 import { getMusics } from "../actions/getAllMusics";
 import ClientMasonry from "./masonry";
 import axios from "axios";
+import api from "@/services/api";
 
 export default async function HomePage() {
 
 
-    const response = await axios.get("http://localhost:3000/music/getAll")
+    const response = await api.get("/music/getAll")
     const musics: IGetMusics[] = response.data
     
     return (
