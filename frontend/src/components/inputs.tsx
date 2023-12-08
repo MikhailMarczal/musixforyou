@@ -1,27 +1,9 @@
 "use client"
-import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react"
+import { useState } from "react"
 import { AiOutlineCloudUpload, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { BsTrash3 } from "react-icons/bs";
-import "./styles.css"
 import { IButton, IChildren } from "@/interfaces/Button";
 import styles from "./AnimatedButton.module.css"
-
-interface IPropsInput {
-    type: HTMLInputTypeAttribute
-    placeholder: string
-    value: string,
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    className?: string;
-}
-
-export function Input(props: IPropsInput){
-    return(
-        <div className={`form__group field ${props.className}`}>
-            <input type={props.type} className="form__field" placeholder="Name" required value={props.value} onChange={props.onChange}/>
-            <label htmlFor="name" className="form__label">{props.placeholder}</label>
-        </div>
-    )
-}
 
 interface IPropsInputPassword {
     className?: string

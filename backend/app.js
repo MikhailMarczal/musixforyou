@@ -3,6 +3,7 @@ const app = express()
 require("dotenv").config()
 require("./db")
 const cors = require("cors");
+const repository = require("./repository")
 
 const port = process.env.PORT || 3000
 
@@ -19,6 +20,11 @@ app.use(cors(corsOptions))
 app.use("/music", musicRouter)
 
 app.use('/uploads', express.static('uploads'));
+
+async function setup(){
+    await repository.createIndex()
+}
+setup()
 
 app.listen(port, () => {
     console.log(`server rodando na porta ${port}`);

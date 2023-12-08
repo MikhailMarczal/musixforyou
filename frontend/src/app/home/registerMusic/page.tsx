@@ -1,6 +1,7 @@
 "use client"
 import { createMusic } from "@/app/actions/postMusic";
-import { AnimatedButton, Button, Input, InputImage } from "@/components/inputs";
+import { AnimatedButton, Button, InputImage } from "@/components/inputs";
+import { PatternInput } from "@/components/patternComponents/inputs";
 import { TYPE_ACCEPT_IMAGES } from "@/constants";
 import { IPostMusic } from "@/interfaces";
 import axios from "axios";
@@ -47,19 +48,19 @@ export default function RegisterMusic(){
         <div className="p-4">
             <h1 className="text-2xl font-bold text-white text-center">Cadastrar Música</h1>
             <form className="flex flex-col gap-4" onSubmit={(e) => handleUpload(e)}>
-                <Input 
+                <PatternInput.Root
                     type="text" 
                     placeholder="Nome da música" 
                     value={dataPostMusic.nome} 
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setDataPostMusic(old => ({...old, nome: e.target.value}))} 
                 />
-                <Input 
+                <PatternInput.Root
                     type="text" 
                     placeholder="Link da música" 
                     value={dataPostMusic.link} 
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setDataPostMusic(old => ({...old, link: e.target.value}))} 
                 />
-                <Input 
+                <PatternInput.Root
                     type="text" 
                     placeholder="Cantor" 
                     value={dataPostMusic.cantor} 

@@ -1,4 +1,3 @@
-const { v4: uuid } = require("uuid")
 const client = require("../db")
 const fs = require("fs")
 const ytdl = require("ytdl-core");
@@ -117,5 +116,40 @@ exports.remove = async (req,res) => {
 
     } catch (error) {
         res.status(500).json({message: "Erro ao excluir musica"})
+    }
+}
+
+exports.getSearch = async (req, res) => {
+    const searchParams = req.params.search
+    try {
+        const musics = await repository.search()
+            .where('nome').matches(`*${searchParams}*`)
+            .or('cantor').matches(`*${searchParams}*`)
+            .return.all()
+
+            res.json(musics)
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.favorite = async (req, res) => {
+    try {
+        const id = req.params.id
+
+        const fetch = await repository.fetch(id)
+        if(!fetch.id){
+            return res.status(400).json({message: "Id não encontrado"})
+        }
+
+        fetch.favorito = !fetch.favorito
+
+        await repository.save(fetch)
+
+        res.status(200).json({message: "Sucesso"})
+
+    } catch (error) {
+        res.status(400).json({msg: "Erro ao editar"})
     }
 }

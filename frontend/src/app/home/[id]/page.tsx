@@ -14,7 +14,8 @@ export default function MusicPage({ params } : { params: { id: string }}){
         capa: "",
         id: "",
         link: "",
-        nome: ""
+        nome: "",
+        favorito: false
     })
     useEffect(() => {
         axios.get(`http://localhost:3000/music/${params.id}`).then((res) => {
@@ -26,12 +27,7 @@ export default function MusicPage({ params } : { params: { id: string }}){
     async function handleDownload() {
         try {
             if (dataGet.musicAsAudio) {
-                const link = document.createElement("a");
-                link.href = dataGet.musicAsAudio;
-                link.download = dataGet.nome;
-                link.target = "_blank"
-                link.rel = "noopener noreferrer"
-                link.click();
+                window.open(dataGet.musicAsAudio)
             }
         } catch (error) {
             toast.error("Erro");

@@ -1,6 +1,8 @@
+import { ROUTES } from "@/constants";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import { AiOutlineDownload } from "react-icons/ai";
+import { MouseEvent, MouseEventHandler } from "react";
+import { AiFillStar, AiOutlineDownload, AiOutlineStar } from "react-icons/ai";
 
 export interface IGetMusics {
     capa: string
@@ -9,6 +11,7 @@ export interface IGetMusics {
     cantor: string,
     id: string,
     musicAsAudio? : string
+    favorito: boolean
 }
 
 interface IProps extends IGetMusics {
@@ -25,5 +28,30 @@ export function MusicCard(props: IProps){
             <p className="">{props.nome}</p>
             <p className="text-sm text-[#B3B3B3] flex gap-2 items-center cursor-pointer">Baixar música (mp3) <AiOutlineDownload /></p>
         </Link>
+    )
+}
+
+interface SearchCardProps {
+    item: IGetMusics
+    onClickRedirect: () => void;
+    onClickFavorite: (e: MouseEvent<HTMLSpanElement, globalThis.MouseEvent>) => void;
+}
+
+export function SearchCard(props: SearchCardProps){
+    return (
+        <div 
+            className="text-white w-full p-3 border-2 border-white rounded-md cursor-pointer" 
+            onClick={props.onClickRedirect}>
+            <div className="flex flex-row justify-between items-center">
+                <p className="font-bold">{props.item.nome}</p>
+                <span 
+                    onClick={(e) => {props.onClickFavorite(e)}}
+                    className="animate hover:scale-110"
+                >
+                    {props.item.favorito ? <AiFillStar size={20}/> : <AiOutlineStar size={20} />}
+                </span>
+            </div>
+            <p>{props.item.cantor}</p>
+        </div>
     )
 }
