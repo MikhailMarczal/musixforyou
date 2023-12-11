@@ -8,7 +8,6 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
-import Swal from "sweetalert2"
 
 
 export default function MusicPage({ params } : { params: { id: string }}){
@@ -56,12 +55,19 @@ export default function MusicPage({ params } : { params: { id: string }}){
         <div className="w-full text-white flex items-center flex-col my-4 gap-2 ">
             <p className="text-3xl font-bold">{dataGet?.nome}</p>
             <p className="text-2xl">Cantor: {dataGet?.cantor}</p>
-            <Link href={dataGet.link} className="text-xl ">Acessar música na plataforma original</Link>
-            <div className="relative w-96 h-96 z-20">
+            <p className="text-xl ">Clique na imagem para acessar a música na plataforma original</p>
+            <div className="relative w-96 h-96 z-20 cursor-pointer" onClick={() => window.open(dataGet.link)}>
                 {dataGet.capa ? <Image src={dataGet.capa} fill className="object-cover" alt={dataGet.nome}/> : null}
             </div>
 
-            <button onClick={() => handleDownload()} className="text-xl">Converter para MP3</button>
+            {dataGet.musicAsAudio ? (
+                <button 
+                    className="text-xl text-white bg-lowBlack p-2 rounded-md font-bold"  
+                    onClick={() => handleDownload()} 
+                >
+                    Converter para MP3
+                </button>
+            ) : null}
             <button type="button" className="text-xl text-customRed bg-white p-2 rounded-md font-bold" onClick={deleteMusic}>
                 Deletar música
             </button>

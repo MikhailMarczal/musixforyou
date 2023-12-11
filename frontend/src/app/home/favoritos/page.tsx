@@ -20,7 +20,7 @@ export default function Favoritos(){
 
     return(
         <div>
-            <p className="text-2xl font-bold text-white text-center mt-8">Músicas favoritas</p>
+            <p className="text-2xl font-bold text-white text-center my-8">Músicas favoritas</p>
             
             <ClientMasonry
                 columns={{ xs: 1, sm: 2, md: 3, lg: 5 }}

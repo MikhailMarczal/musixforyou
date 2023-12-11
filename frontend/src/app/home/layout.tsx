@@ -36,7 +36,7 @@ export default function RootLayout({
             isLeftMenuOpen ? <LeftMenuSmallWindows onClickOut={() => setIsLeftMenuOpen(false)} handleIsLeftMenuOpen={() => setIsLeftMenuOpen(old => !old)} /> : null
         )}
         <main className="min-h-screen w-full bg-gradient-to-b from-mediumBlack via-[#202020] via-30% to-[#0B5EAA]/80">
-            <Navbar  windowMd={windowMd} handleLeftMenu={() => setIsLeftMenuOpen(old => !old)}/>
+            <Navbar windowMd={windowMd} handleLeftMenu={() => setIsLeftMenuOpen(old => !old)}/>
             {children}
         </main>
     </div>

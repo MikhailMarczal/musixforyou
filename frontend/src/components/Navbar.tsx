@@ -19,15 +19,6 @@ export default function Navbar(props: IProps) {
                         Bem vindo, usuário
                     </div>
                 )}
-                
-                <div className="gap-4 flex items-center">
-                    <Link href={ROUTES.REGISTER}>
-                        Registrar
-                    </Link>
-                    <Link href={ROUTES.LOGIN} className="bg-blue-400 rounded-full p-4 text-black font-bold">
-                        Entrar
-                    </Link>
-                </div>
             </div>
         </header>
     );
