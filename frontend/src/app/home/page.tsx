@@ -1,15 +1,20 @@
+"use client"
 import { IGetMusics, MusicCard } from "@/components/cards";
 
-import { getMusics } from "../actions/getAllMusics";
 import ClientMasonry from "./masonry";
-import axios from "axios";
 import api from "@/services/api";
+import { useEffect, useState } from "react";
 
-export default async function HomePage() {
+export default function HomePage() {
+    const [musics, setMusics] = useState<IGetMusics[]>()
 
+    useEffect(() => {
+        api.get("/music/getAll").then((res) => {
+            setMusics(res.data)
+        })
+    },[])
 
-    const response = await api.get("/music/getAll")
-    const musics: IGetMusics[] = response.data
+    
     
     return (
         <ClientMasonry
@@ -17,13 +22,15 @@ export default async function HomePage() {
             spacing={1.5}
             className="mx-auto"
         >
-            {musics.map((item) => (
-                <MusicCard
-                    {...item}
-                    key={item.nome + item.cantor}
-                    redirect={`/home/${item.id}`}
-                />
-            ))}
+            <>
+                {musics?.map((item) => (
+                    <MusicCard
+                        {...item}
+                        key={item.nome + item.id}
+                        redirect={`/home/${item.id}`}
+                    />
+                ))}
+            </>
         </ClientMasonry>
     );
 }

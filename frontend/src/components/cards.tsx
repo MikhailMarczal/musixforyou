@@ -1,8 +1,9 @@
 import { ROUTES } from "@/constants";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
-import { MouseEvent, MouseEventHandler } from "react";
+import { MouseEvent } from "react";
 import { AiFillStar, AiOutlineDownload, AiOutlineStar } from "react-icons/ai";
+import { BsTrash3 } from "react-icons/bs";
 
 export interface IGetMusics {
     capa: string
