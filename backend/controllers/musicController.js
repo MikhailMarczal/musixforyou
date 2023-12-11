@@ -35,11 +35,6 @@ exports.create = async (req, res) => {
 
         await repository.save(music)
 
-        await client.zAdd("musics", {
-            value: music.id,
-            score: date
-        }) 
-
         return res.status(200).json({id: `${music[EntityId]}`})
 
     } catch (error) {
@@ -58,12 +53,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     try {
-        const result = await client.zRangeWithScores('musics', 0, -1)
-        
-        const musics = await Promise.all(result.map(async (item) => {
-            const musicData = await repository.fetch(item.value)
-            return musicData
-        }))
+        const musics = await repository.search().return.all()
     
         res.json(musics);
     } catch (error) {
@@ -109,8 +99,6 @@ exports.remove = async (req,res) => {
         }
 
         await repository.remove(id)
-
-        await client.zRem(`musics`, music.id)
 
         res.status(200).json({message: "DEU GOOD"})
 
