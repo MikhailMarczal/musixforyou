@@ -6,19 +6,30 @@ const { EntityId } = require("redis-om");
 
 exports.create = async (req, res) => {
     const videoUrl = req.body.link
+    var isVideoUrlValid = true
 
-    const isVideoUrlValid = ytdl.validateURL(videoUrl)
+    const isYoutube = videoUrl.includes("youtube")
+
+    
+
+   
+
+    
     
     try {
-        const date = Date.now()
-
-        const videoInfo = await ytdl.getInfo(videoUrl)
-        const audioFormats = ytdl.filterFormats(videoInfo.formats, "audioonly")
         
-        var musicAsAudio
-        audioFormats.map((item) => {
-            musicAsAudio = item.url
-        })
+        if(isYoutube){
+            isVideoUrlValid = ytdl.validateURL(videoUrl)
+
+            const videoInfo = await ytdl.getInfo(videoUrl)
+            const audioFormats = ytdl.filterFormats(videoInfo.formats, "audioonly")
+            
+            var musicAsAudio
+            audioFormats.map((item) => {
+                musicAsAudio = item.url
+            })
+        }
+        
 
         const data = {
             nome: req.body.nome,
