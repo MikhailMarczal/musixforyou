@@ -1,4 +1,4 @@
-import { Input, InputPassword } from "@/components/inputs";
+import { InputPassword } from "@/components/inputs";
 
 export default function Home() {
     return (
