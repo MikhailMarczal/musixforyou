@@ -2,9 +2,9 @@
 
 import { IGetMusics } from "@/components/cards"
 import { SwalAlert } from "@/components/sweetalert"
+import { usePlayer } from "@/context"
 import api from "@/services/api"
 import Image from "next/image"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -19,6 +19,8 @@ export default function MusicPage({ params } : { params: { id: string }}){
         nome: "",
         favorito: false
     })
+
+    const { setMusic } = usePlayer()
 
     useEffect(() => {
         api.get(`/music/${params.id}`).then((res) => {
@@ -59,8 +61,15 @@ export default function MusicPage({ params } : { params: { id: string }}){
             <div className="relative w-96 h-96 z-20 cursor-pointer" onClick={() => window.open(dataGet.link)}>
                 {dataGet.capa ? <Image src={dataGet.capa} fill className="object-cover" alt={dataGet.nome}/> : null}
             </div>
-
-            {dataGet.musicAsAudio ? (
+            {dataGet?.musicAsAudio ? (
+                <button type="button" className="text-xl text-blue-500 bg-lowBlack p-2 rounded-md font-bold" onClick={() => setMusic({
+                    music: dataGet.musicAsAudio!,
+                    name: dataGet.nome
+                })}>
+                    Tocar música
+                </button>
+            ) : null }
+            {dataGet?.musicAsAudio ? (
                 <button 
                     className="text-xl text-white bg-lowBlack p-2 rounded-md font-bold"  
                     onClick={() => handleDownload()} 
