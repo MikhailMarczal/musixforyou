@@ -5,6 +5,7 @@ import LeftMenu from "@/components/newLeftMenu";
 import { usePlayer } from "@/context";
 import { useEffect, useState } from "react";
 import AudioPlayer from 'react-h5-audio-player';
+import { BiX } from "react-icons/bi";
 //import 'react-h5-audio-player/lib/styles.css';
 
 
@@ -17,7 +18,7 @@ export default function RootLayout({
     const [windowWidth, setWindowWidth] = useState(0);
     const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false)
 
-    const { playingMusic } = usePlayer()
+    const { playingMusic, setMusic } = usePlayer()
 
     useEffect(() => {
         const handleResize = () => {
@@ -47,14 +48,15 @@ export default function RootLayout({
                 {children}
             </div>
                 {playingMusic.music ? (
-                    <div className="flex flex-col bg-lowBlack ">
-                        <p className="p-2 text-white"><b className="text-[#0B5EAA]">Tocando agora:</b> {playingMusic.name}</p>
+                    <div className="flex flex-col bg-lowBlack" style={{boxShadow: "0 0 3px 0 rgba(0, 0, 0, 0.2)"}}>
+                        <div className="flex items-center justify-between pr-6">
+                            <p className="p-2 text-white"><b className="text-[#0B5EAA]">Tocando agora:</b> {playingMusic.name}</p>
+                            <BiX size={28} color="white" className="cursor-pointer" onClick={() => setMusic({music: "", name: ""})}/>
+                        </div>
                         <AudioPlayer
                             autoPlay
                             src={playingMusic.music}
                             onPlay={e => console.log("onPlay")}
-                            
-                            autoPlayAfterSrcChange={false}
                         />
                     </div>
                 ) : null}
