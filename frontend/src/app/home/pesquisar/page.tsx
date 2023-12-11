@@ -3,7 +3,6 @@ import { ChangeEvent, useState } from "react";
 import { PatternInput } from "@/components/patternComponents/inputs"
 import api from "@/services/api";
 import { IGetMusics, SearchCard } from "@/components/cards";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 
 export default function Pesquisar(){
@@ -49,8 +48,6 @@ export default function Pesquisar(){
             
             setSearchData(copyArray)
         }
-
-        
     }
 
     return(

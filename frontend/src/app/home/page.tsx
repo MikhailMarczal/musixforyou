@@ -4,6 +4,7 @@ import { IGetMusics, MusicCard } from "@/components/cards";
 import ClientMasonry from "./masonry";
 import api from "@/services/api";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
     const [musics, setMusics] = useState<IGetMusics[]>()
@@ -14,7 +15,21 @@ export default function HomePage() {
         })
     },[])
 
-    
+    const { push } = useRouter();
+
+    function favorite(id: string){
+        api.patch(`/music/favorite/${id}`)
+
+        if(musics && musics.length > 0){
+            const copyArray = musics.slice()
+
+            const index = copyArray.findIndex((item) => item.id == id)
+
+            copyArray[index].favorito = !musics[index].favorito
+            
+            setMusics(copyArray)
+        }
+    }
     
     return (
         <ClientMasonry
@@ -27,7 +42,11 @@ export default function HomePage() {
                     <MusicCard
                         {...item}
                         key={item.nome + item.id}
-                        redirect={`/home/${item.id}`}
+                        onClickFavorite={(e) => {
+                            e.stopPropagation()
+                            favorite(item.id)
+                        }}
+                        onClickRedirect={() => push(`/home/${item.id}`)}
                     />
                 ))}
             </>

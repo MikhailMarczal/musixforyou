@@ -1,9 +1,6 @@
-import { ROUTES } from "@/constants";
 import Image from "next/image";
-import Link from "next/link";
 import { MouseEvent } from "react";
 import { AiFillStar, AiOutlineDownload, AiOutlineStar } from "react-icons/ai";
-import { BsTrash3 } from "react-icons/bs";
 
 export interface IGetMusics {
     capa: string
@@ -16,19 +13,26 @@ export interface IGetMusics {
 }
 
 interface IProps extends IGetMusics {
-    redirect: string
+    onClickFavorite: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void;
+    onClickRedirect: () => void;
 }
 
 export function MusicCard(props: IProps){
     
     return(
-        <Link className="flex flex-col justify-center bg-lowBlack rounded-md p-4 text-white gap-2 shadow-cards" href={props.redirect}>
+        <div 
+            className="flex flex-col justify-center bg-lowBlack rounded-md p-4 text-white gap-2 shadow-cards relative cursor-pointer" 
+            onClick={props.onClickRedirect}
+        >
+            <div className="absolute top-2 right-2 animate hover:scale-110 cursor-pointer" onClick={(e) => {props.onClickFavorite(e)}} >
+                {props.favorito ? <AiFillStar size={20}/> : <AiOutlineStar size={20} />}
+            </div>
             <div className="flex justify-center">
                 <Image src={props.capa} alt={props.nome} className="rounded-md" width={200} height={200}  />
             </div>
             <p className="">{props.nome}</p>
             <p className="text-sm text-[#B3B3B3] flex gap-2 items-center cursor-pointer">Baixar música (mp3) <AiOutlineDownload /></p>
-        </Link>
+        </div>
     )
 }
 

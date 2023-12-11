@@ -3,8 +3,8 @@ export const ROUTES = {
     REGISTER: "/registrar",
     HOME: "/home",
     ADD_MUSIC: "/home/registerMusic",
-    FAVORITE_MUSICS: "/favoritos",
-    SEARCH_MUSICS: "/home/pesquisar"
+    FAVORITE_MUSICS: "/home/favoritos",
+    SEARCH_MUSICS: "/home/pesquisar",
 }
 
 export const TYPE_ACCEPT_IMAGES = ".jpg, .jpeg, .png";

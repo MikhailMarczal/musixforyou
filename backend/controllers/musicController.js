@@ -141,3 +141,15 @@ exports.favorite = async (req, res) => {
         res.status(400).json({msg: "Erro ao editar"})
     }
 }
+
+exports.getFavorites = async (req, res) => {
+    try {
+        const favorites = await repository.search()
+        .where("favorito").true()
+        .return.all()
+
+        res.status(200).json(favorites)
+    } catch (error) {
+        res.status(400)
+    }
+}
